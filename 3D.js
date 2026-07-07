@@ -5,6 +5,7 @@ xcen = canvas.width/2;
 ycen = canvas.height/2;
 ma = 200;
 camz = -50;
+//화면 크기와 camz로 fov 구하고 쓸 수 있음
 
 prevX = 0;
 prevY = 0;
@@ -46,21 +47,28 @@ function triangle(a,b,c,d,e,f,g) {
 function drawtri(a,b,c) {
     AB = [findots[b][0]-findots[a][0], findots[b][1]-findots[a][1],findots[b][2]-findots[a][2]]
     AC = [findots[c][0]-findots[a][0], findots[c][1]-findots[a][1],findots[c][2]-findots[a][2]]
+    // AB, AC 리스트는 각각 a->b , a->c인 벡터입니다
+    
     cross_prod = [AB[1]*AC[2]-AB[2]*AC[1], AB[2]*AC[0]-AB[0]*AC[2], AB[0]*AC[1]-AB[1]*AC[0]]
+    //두 벡터의 외적으로 그 면(삼각형)의 법선벡터를 구하고
+    
     magnitude = Math.sqrt(cross_prod[0]*cross_prod[0] + cross_prod[1]*cross_prod[1] + cross_prod[2]*cross_prod[2])
+    // magnitude = 법선벡터의 크기
     normal = [cross_prod[0]/magnitude, cross_prod[1]/magnitude, cross_prod[2]/magnitude]
-    if (normal[0]*findots[a][0] + 
-        normal[1]*findots[a][1] + 
-        normal[2]*(findots[a][2]-camz) < 0 &&
-        findots[a][2] > camz && 
-        findots[b][2] > camz && 
-        findots[c][2] > camz) {
+    // 노멀벡터 = 법선벡터를 크기가 1이게 만든, 그러니까 방향값만 갖는 벡터
+    
+    if (normal[0]*findots[a][0] + normal[1]*findots[a][1] + normal[2]*(findots[a][2]-camz) < 0 &&
+        findots[a][2] > camz && findots[b][2] > camz && findots[c][2] > camz) {
+        //첫번째 조건: 이 면의 법선벡터와 카메라 벡터의 내적을 구하고 내적이 음수이면 참, 아니면 거짓
+        //두번째 조건: 첫번째 조건이 만족되었을 때 면이 카메라 앞에 있는지, 뒤에 있는지 확인
         x1 = xcen + findots[a][0]/(findots[a][2]-camz)*ma;
         y1 = ycen - findots[a][1]/(findots[a][2]-camz)*ma;
         x2 = xcen + findots[b][0]/(findots[b][2]-camz)*ma;
         y2 = ycen - findots[b][1]/(findots[b][2]-camz)*ma;
         x3 = xcen + findots[c][0]/(findots[c][2]-camz)*ma;
         y3 = ycen - findots[c][1]/(findots[c][2]-camz)*ma;
+        //3차원 점의 x,y,z를 2차원 화면의 x,y값으로 변환(하고 웹사이트 캔버스에 맞게 크기 조정)
+        //이 예제에선 그냥 점의 x,y좌표를 (z좌표-카메라z값)으로 나누기만 하면 됨
         triangle(x1,y1,x2,y2,x3,y3,color);
     }
 }
