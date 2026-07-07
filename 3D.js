@@ -47,7 +47,7 @@ function triangle(a,b,c,d,e,f,g) {
 function drawtri(a,b,c) {
     AB = [findots[b][0]-findots[a][0], findots[b][1]-findots[a][1],findots[b][2]-findots[a][2]]
     AC = [findots[c][0]-findots[a][0], findots[c][1]-findots[a][1],findots[c][2]-findots[a][2]]
-    // AB, AC 리스트는 각각 a->b , a->c인 벡터입니다
+    // AB, AC 리스트는 각각 a->b , a->c인 벡터
     
     cross_prod = [AB[1]*AC[2]-AB[2]*AC[1], AB[2]*AC[0]-AB[0]*AC[2], AB[0]*AC[1]-AB[1]*AC[0]]
     //두 벡터의 외적으로 그 면(삼각형)의 법선벡터를 구하고
